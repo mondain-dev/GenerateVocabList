@@ -15,7 +15,7 @@ for n in 3000 5000 10000; do
   tag=`echo $n | awk '{printf "%.0f\n", $1/100}' | awk '{print $1/10"k"}' `
   DIR_TEMP=$DIR_OUTPUT/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
   mkdir $DIR_TEMP
-  cat $csv_input | head -n $n | tail -n +$n0 | sort -R | split -l 100 - $DIR_TEMP/x
+  head -n $n $csv_input | tail -n +$n0 | sort -R | split -l 100 - $DIR_TEMP/x
   for file in $DIR_TEMP/x*; do
     temp_tex=$DIR_TEMP/tabular_${tag}_`zeropad $i 3`.tex
     doc_tex=$DIR_OUTPUT/Rus_vocab_${tag}_`zeropad $i 3`.tex
