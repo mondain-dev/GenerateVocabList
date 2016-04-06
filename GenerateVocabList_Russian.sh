@@ -13,7 +13,7 @@ i=1
 n0=301
 for n in 3000 5000 10000; do
   tag=`echo $n | awk '{printf "%.0f\n", $1/100}' | awk '{print $1/10"k"}' `
-  DIR_TEMP=$DIR_OUTPUT/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+  DIR_TEMP=$DIR_OUTPUT/$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
   mkdir $DIR_TEMP
   head -n $n $csv_input | tail -n +$n0 | sort -R | split -l 100 - $DIR_TEMP/x
   for file in $DIR_TEMP/x*; do
