@@ -15,7 +15,7 @@ if [ ! -f "$csv_input" ]; then
 fi
 
 csv_processed=${csv_input%.csv}_processed.csv
-awk '{if(NF==1){sub(/^l'"'"'/, "", $1);}print $0;}' $csv_input | awk '{if(NF==2){if($1=="le"||$1=="la"||$1=="les"){print $2}else{print $0}}else{print $0}}' | nl | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -f 2- > $csv_processed
+awk '{if(NF==1){sub(/^l'"'"'/, "", $1);}print $0;}' $csv_input | awk '{if(NF==2){if($1=="le"||$1=="la"||$1=="les"||$1=="un"||$1=="une"){print $2}else{print $0}}else{print $0}}' | nl | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -f 2- > $csv_processed
 
 DIR_OUTPUT=$(realpath `dirname $csv_input`)
 DIR_CURRENT=`pwd`
