@@ -7,10 +7,9 @@ if [ -z "$csv_input" ]; then
   csv_input=`pwd`/fr_vocab_linguee_10k.csv
 fi
 if [ ! -f "$csv_input" ]; then
-  for url in http://www.linguee.fr/french-english/topfrench/1-200.html http://www.linguee.fr/francais-anglais/topfrench/201-1000.html http://www.linguee.fr/francais-anglais/topfrench/1001-2000.html echo $(for i in `seq 2001 100 10000`; do  echo http://www.linguee.fr/french-english/topfrench/${i}-$((i+99)).html; done); do
-
+  url_base=http://www.linguee.fr/french-english/topfrench
+  for url in ${url_base}/1-200.html ${url_base}/201-1000.html ${url_base}/1001-2000.html echo $(for i in `seq 2001 100 10000`; do  echo ${url_base}/${i}-$((i+99)).html; done); do
     curl -s $url | hxnormalize -l 240 -x 2>/dev/null | hxselect -s '\n' -c 'table tr td a' | iconv -f iso-8859-15 -t UTF-8 | php -r 'while(($line=fgets(STDIN)) !== FALSE) echo html_entity_decode($line, ENT_QUOTES|ENT_HTML401);' 
-
     sleep 4s
   done > $csv_input 
 fi
