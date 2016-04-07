@@ -4,7 +4,7 @@
 ## see post https://www.reddit.com/r/russian/comments/289wba/10000_most_common_russian_words_in_spreadsheet/
 csv_input=$1
 
-DIR_OUTPUT=`dirname $csv_input`
+DIR_OUTPUT=$(realpath `dirname $csv_input`)
 
 DIR_CURRENT=`pwd`
 cd $DIR_OUTPUT
