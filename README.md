@@ -7,4 +7,4 @@ This is a bash script, which generates from a vocabulary list (in .csv) a series
 - xelatex
 - php
 - html-xml-utils
-- [MElt](https://www.rocq.inria.fr/alpage-wiki/tiki-index.php?page=MElt).
+- [MElt](https://www.rocq.inria.fr/alpage-wiki/tiki-index.php?page=MElt)
