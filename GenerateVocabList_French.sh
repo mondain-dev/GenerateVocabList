@@ -14,6 +14,9 @@ if [ ! -f "$csv_input" ]; then
   done > $csv_input 
 fi
 
+csv_processed=${csv_input%.csv}_processed.csv
+awk '{if(NF==1){sub(/^l'"'"'/, "", $1);}print $0;}' $csv_input | awk '{if(NF==2){if($1=="le"||$1=="la"||$1=="les"){print $2}else{print $0}}else{print $0}}' | nl | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -f 2- > $csv_processed
+
 DIR_OUTPUT=$(realpath `dirname $csv_input`)
 DIR_CURRENT=`pwd`
 cd $DIR_OUTPUT
@@ -27,7 +30,7 @@ for n in 200 1000 2000 5000 10000; do
   fi
   DIR_TEMP=$DIR_OUTPUT/$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
   mkdir $DIR_TEMP
-  head -n $n $csv_input | tail -n +$n0 | sort -R | split -l 100 - $DIR_TEMP/x
+  head -n $n $csv_processed | tail -n +$n0 | sort -R | split -l 100 - $DIR_TEMP/x
   for file in $DIR_TEMP/x*; do
     temp_tex=$DIR_TEMP/tabular_${tag}_`zeropad $i 3`.tex
     doc_tex=$DIR_OUTPUT/fr_vocab_linguee_${tag}_`zeropad $i 3`.tex
