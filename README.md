@@ -5,3 +5,5 @@ This is a bash script, which generates from a vocabulary list (in .csv) a series
 ## Dependencies
 - csv2latex
 - xelatex
+- php
+- html-xml-utils
