@@ -19,10 +19,10 @@ csv_temp=${csv_input%.csv}_temp.csv
 awk '{if(NF==1){sub(/^l'"'"'/, "", $1);}print $0;}' $csv_input | awk '{if(NF==2){if($1=="le"||$1=="la"||$1=="les"||$1=="un"||$1=="une"){print $2}else{print $0}}else{print $0}}' | nl | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -f 2- > $csv_temp
 
 # remove duplicated lemma
-paste <(nl $csv_temp | awk '{if(NF==2){print $1}}' ) <( awk '{if(NF==1){print $0}}' $csv_temp | MElt -L 2>/dev/null |  awk -F/ '{if($3 ~"*"||$3=="cln"){print $1}else{print $3}}' ) > ${csv_input%.csv}_lemma.txt
+paste <(nl $csv_temp | awk '{if(NF==2){print $1}}' ) <( awk '{if(NF==1){print $0}}' $csv_temp | MElt -L 2>/dev/null |  awk -F/ '{if($3 ~"*"){print $1}else{print $3}}' ) > ${csv_input%.csv}_lemma.txt
 
 csv_processed=${csv_input%.csv}_processed.csv
-nl $csv_temp | while read line; do line_no=`echo $line | awk '{print $1}'`; lemma=`awk -v l=$line_no '{if($1==l){print $2}}' ${csv_input%.csv}_lemma.txt `; if [ -n "${lemma}" ]; then echo $line_no $lemma; else  echo $line; fi; done | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -d ' ' -f 2- > $csv_processed
+nl $csv_temp | while read line; do line_no=`echo $line | awk '{print $1}'`; lemma=`awk -v l=$line_no '{if($1==l){print $2}}' ${csv_input%.csv}_lemma.txt `; if [ -n "${lemma}" ]; then if [ $lemma != "cln" ]; then echo $line_no $lemma; fi; else echo $line; fi; done | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -d ' ' -f 2- > $csv_processed
 rm $csv_temp ${csv_input%.csv}_lemma.txt
 
 DIR_OUTPUT=$(realpath `dirname $csv_input`)
