@@ -18,7 +18,7 @@ fi
 csv_temp=${csv_input%.csv}_temp.csv
 awk '{if(NF==1){sub(/^l'"'"'/, "", $1);}print $0;}' $csv_input | awk '{if(NF==2){if($1=="le"||$1=="la"||$1=="les"||$1=="un"||$1=="une"){print $2}else{print $0}}else{print $0}}' | nl | sort -k 2 | uniq -f 1 | sort -n -k1 | cut -f 2- > $csv_temp
 
-# remove duplicated lemma
+# remove duplicated lemmata
 paste <(nl $csv_temp | awk '{if(NF==2){print $1}}' ) <( awk '{if(NF==1){print $0}}' $csv_temp | MElt -L 2>/dev/null |  awk -F/ '{if($3 ~"*"){print $1}else{print $3}}' ) > ${csv_input%.csv}_lemma.txt
 
 csv_processed=${csv_input%.csv}_processed.csv
